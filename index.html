@@ -4,12 +4,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <base href="/agiliquizz/">
   <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.0-rc4/angular-material.min.css">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 <body ng-app="agiliquizz" ng-cloak>
   <div class="view-animate-container">
     <div ng-view class="view-animate"></div>
   </div>
-  
+
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-animate.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-aria.min.js"></script>
@@ -17,141 +18,10 @@
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-route.min.js"></script>
 
   <script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.0-rc4/angular-material.min.js"></script>
-  
+
   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.13.0/moment-with-locales.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-moment/1.0.0-beta.6/angular-moment.min.js"></script>
-  
-  <script type="text/javascript">
-    Array.prototype.shuffle = function () {
-      for (var i = this.length - 1; i > 0; i--) {
-        var j = Math.floor(Math.random() * (i + 1));
-        var temp = this[i];
-        this[i] = this[j];
-        this[j] = temp;
-      }
-      return this;
-    };
-    
-    var app = angular.module('agiliquizz', [ 'ngMaterial', 'ngRoute', 'angularMoment' ]);
-    
-    app.config(function($routeProvider) {
-      $routeProvider.when('/', {
-        templateUrl : 'static/templates/start.html',
-        controller : 'StartController'
-      }).when('/load/:dataUrl', {
-        templateUrl : 'static/templates/load.html',
-        controller : 'LoadController'
-      }).when('/:dataUrl', {
-        templateUrl : 'static/templates/new.html',
-        controller : 'NewController'
-      }).when('/:dataUrl/question/:questionNum', {
-        templateUrl : 'static/templates/question.html',
-        controller : 'QuestionController'
-      }).when('/:dataUrl/result', {
-        templateUrl : 'static/templates/result.html',
-        controller : 'ResultController'
-      }).otherwise('/');
-    });
-    
-    app.run(function(amMoment) {
-      amMoment.changeLocale('fr');
-    });
 
-    app.controller('StartController', function($scope) {
-      $scope.title = 'Bienvenue';
-      //FIXME clear quizz
-    });
-
-    app.controller('LoadController', function($scope, $routeParams, $location) {
-      $scope.title = 'Chargement...';
-      //FIXME load quizz
-      $location.url('/new');
-    });
-    
-    app.controller('QuizzController', function($routeParams, $location, $scope, $http, moment, $interval, $timeout) {
-      var currentDataUrl = null;
-      
-      var goTo = function(url) {
-        $location.url('/' + encodeURIComponent(currentDataUrl) + url);
-      };
-      
-      $scope.loadDataIfNecessary = function() {
-        if ($routeParams.dataUrl != currentDataUrl) {
-          currentDataUrl = $routeParams.dataUrl;
-          
-          $scope.title = 'Chargement...';
-          $scope.questions = false;
-          $scope.params = { numOfQuestions : 10, maxTime : 8 };
-          $scope.quizz = false;
-          
-          $http.get(decodeURIComponent(currentDataUrl)).then(function(response) {
-            $scope.title = response.data.title;
-            $scope.questions = response.data.questions;
-            if ($scope.questions.length < 10) {
-              $scope.params.numOfQuestions = $scope.questions.length;
-            }
-            $scope.params.maxTime = Math.ceil($scope.params.numOfQuestions * 3 / 4);
-            goTo('');
-          });
-          //TODO gérer 404
-        }
-      };
-      
-      $scope.startQuizz = function() {
-        $scope.quizz = angular.extend({}, $scope.params);
-        
-        $scope.quizz.questions = $scope.questions.slice(0).shuffle().slice(0, $scope.quizz.numOfQuestions).map(function(question) {
-          return { question : question };
-        });
-        
-        var endTime = moment().add($scope.quizz.maxTime, 'minutes');
-        
-        var zeroPad = function(i) {
-          var s = '' + i;
-          while (s.length < 2) {
-            s = '0' + s;
-          }
-          return s;
-        };
-        
-        var timeRemainingInterval = $interval(function() {
-          var timeRemaining = moment.duration(endTime.diff(moment()));
-          $scope.quizz.timeRemaining = zeroPad(timeRemaining.minutes()) + ':' + zeroPad(timeRemaining.seconds());
-        }, 100, $scope.quizz.maxTime * 600);
-        
-        var endTimeout = $timeout(function() {
-          alert('timeout!');
-          //TODO timeout
-        }, $scope.quizz.maxTime * 60000);
-        
-        $scope.quizz.cancel = function() {
-          $interval.cancel(timeRemainingInterval);
-          $timeout.cancel(endTimeout);
-          $scope.quizz = false;
-          goTo('');
-        };
-        
-        goTo('/question/1');
-      };
-    });
-    
-    app.controller('NewController', function($scope) {
-      if ($scope.quizz) {
-        $scope.quizz.cancel();
-        return;
-      }
-    });
-    
-    app.controller('QuestionController', function($scope, $routeParams) {
-      if (!$scope.quizz) {
-        goTo('');
-      }
-      $scope.question = $scope.quizz.questions[$routeParams.questionNum];
-    });
-    
-    app.controller('ResultController', function() {
-      
-    });
-  </script>
+  <script src="static/js/agiliquizz.js"></script>
 </body>
 </html>
