@@ -5,25 +5,9 @@
   <base href="/agiliquizz/">
   <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.0-rc4/angular-material.min.css">
 </head>
-<body ng-app="AgiliQuizz" ng-cloak>
-  <div ng-controller="QuizzController" layout="column" layout-fill>
-    <md-toolbar>
-      <div class="md-toolbar-tools">
-        <h1>AgiliQuizz - {{title}}</h1>
-        <span flex></span>
-        {{quizz.timeRemaining}}
-        <span flex></span>
-        <md-button>
-          Right Bar Button
-        </md-button>
-      </div>
-    </md-toolbar>
-  
-    <md-content layout-padding>
-      <div class="view-animate-container">
-        <div ng-view class="view-animate" onload="loadDataIfNecessary()"></div>
-      </div>
-    </md-content>
+<body ng-app="agiliquizz" ng-cloak>
+  <div class="view-animate-container">
+    <div ng-view class="view-animate"></div>
   </div>
   
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js"></script>
@@ -48,11 +32,15 @@
       return this;
     };
     
-    var app = angular.module('AgiliQuizz', [ 'ngMaterial', 'ngRoute', 'angularMoment' ]);
+    var app = angular.module('agiliquizz', [ 'ngMaterial', 'ngRoute', 'angularMoment' ]);
     
     app.config(function($routeProvider) {
       $routeProvider.when('/', {
-        templateUrl : 'static/templates/start.html'
+        templateUrl : 'static/templates/start.html',
+        controller : 'StartController'
+      }).when('/load/:dataUrl', {
+        templateUrl : 'static/templates/load.html',
+        controller : 'LoadController'
       }).when('/:dataUrl', {
         templateUrl : 'static/templates/new.html',
         controller : 'NewController'
@@ -67,6 +55,17 @@
     
     app.run(function(amMoment) {
       amMoment.changeLocale('fr');
+    });
+
+    app.controller('StartController', function($scope) {
+      $scope.title = 'Bienvenue';
+      //FIXME clear quizz
+    });
+
+    app.controller('LoadController', function($scope, $routeParams, $location) {
+      $scope.title = 'Chargement...';
+      //FIXME load quizz
+      $location.url('/new');
     });
     
     app.controller('QuizzController', function($routeParams, $location, $scope, $http, moment, $interval, $timeout) {
