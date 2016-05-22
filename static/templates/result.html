@@ -1,1 +1,7 @@
-Result
+<div layout="column">
+  <ng-include src="'static/templates/toolbar.html'"></ng-include>
+  <md-content layout="column" layout-padding>
+    <h2 class="md-title" style="text-align: center">Score : {{result.score}} / {{result.questions.length}}</h2>
+    {{result|json}}
+  </md-content>
+</div>

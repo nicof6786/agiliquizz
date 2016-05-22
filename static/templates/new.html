@@ -1,18 +1,19 @@
-<div layout="column" layout-fill>
+<div layout="column">
   <ng-include src="'static/templates/toolbar.html'"></ng-include>
-  <md-content layout-padding>
-    <form name="newForm">
-      <div layout="column">
-        <md-input-container>
-          <label>Nombre de questions</label>
-          <input type="number" ng-model="questions" required min="1" max="{{maxQuestions}}">
-        </md-input-container>
-        <md-input-container>
-          <label>Temps maximum (minutes)</label>
-          <input type="number" ng-model="time" required min="1" max="{{maxQuestions * 2}}">
-        </md-input-container>
-        <md-button class="md-primary md-raised" ng-click="start()">Démarrer</md-button>
+  <form name="newForm">
+    <md-content layout="column" layout-padding>
+      <h2 class="md-title" style="text-align: center">Sélectionner les paramètres de votre quizz</h2>
+      <md-input-container>
+        <label>Nombre de questions</label>
+        <input type="number" ng-model="questions" required min="1" max="{{maxQuestions}}">
+      </md-input-container>
+      <md-input-container>
+        <label>Temps maximum (minutes)</label>
+        <input type="number" ng-model="time" required min="1" max="{{maxQuestions * 2}}">
+      </md-input-container>
+      <div layout="row" layout-align="space-around">
+        <md-button class="md-primary md-raised" ng-click="newForm.$valid && start()">Démarrer</md-button>
       </div>
-    </form>
-  </md-content>
+    </md-content>
+  </form>
 </div>

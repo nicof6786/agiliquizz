@@ -44,7 +44,7 @@ app.run(function(amMoment) {
 app.controller('StartCtrl', function($scope, quizzSrv) {
   quizzSrv.clearQuizz();
 
-  $scope.title = 'Bienvenue';
+  $scope.title = 'Agiliquizz';
 });
 
 app.controller('LoadCtrl', function($location, $routeParams, $scope, quizzSrv) {
@@ -89,24 +89,71 @@ app.controller('QuestionCtrl', function($interval, $location, $routeParams, $sco
   }
 
   $scope.title = quizzSrv.getTitle();
-  $scope.question = quizzSrv.getQuestion($routeParams.question);
+  $scope.nQuestion = parseInt($routeParams.question);
+  $scope.question = quizzSrv.getQuestion($scope.nQuestion - 1);
 
   if (!$scope.question) {
-    //FIXME redirect vers résumé
+    //TODO redirect vers résumé
     return $location.url('/new');
   }
 
-  var rtInterval = $interval(function() {
+  $scope.nQuestions = quizzSrv.getNQuestions();
+
+  var updateRemainingTime = function() {
     $scope.remainingTime = quizzSrv.getRemainingTime();
-  }, 100);
+  };
+  updateRemainingTime();
+  var rtInterval = $interval(updateRemainingTime, 100);
+
+  $scope.hasPrevious = function() {
+    return $scope.nQuestion !== 1;
+  };
+
+  $scope.previous = function() {
+    $location.url("/question/" + ($scope.nQuestion - 1));
+  };
+
+  $scope.hasNext = function() {
+    return $scope.nQuestion !== $scope.nQuestions;
+  };
+
+  $scope.next = function() {
+    $location.url("/question/" + ($scope.nQuestion + 1));
+  };
+
+  $scope.toggle = function(value) {
+    if (!Array.isArray($scope.question.answer)) {
+      $scope.question.answer = [];
+    }
+    var index;
+    if ((index = $scope.question.answer.indexOf(value)) === -1) {
+      $scope.question.answer.push(value);
+    } else {
+      $scope.question.answer.splice(index, 1);
+    }
+  };
+
+  $scope.isChecked = function(value) {
+    return $scope.question.answer && $scope.question.answer.indexOf(value) !== -1;
+  }
 
   $scope.$on("$destroy", function() {
     $interval.cancel(rtInterval);
   });
 });
 
-app.controller('ResultCtrl', function() {
+app.controller('ResultCtrl', function($location, $scope, quizzSrv) {
+  if (!quizzSrv.hasData()) {
+    return $location.url('/');
+  }
+  if (!quizzSrv.hasQuizz()) {
+    return $location.url('/new');
+  }
 
+  quizzSrv.stopQuizz();
+
+  $scope.title = quizzSrv.getTitle();
+  $scope.result = quizzSrv.getResult();
 });
 
 app.factory('quizzSrv', function($http, $location, $q, $timeout) {
@@ -119,6 +166,11 @@ app.factory('quizzSrv', function($http, $location, $q, $timeout) {
       $http.get(decodeURIComponent(url)).
       then(function(response) {
         data = response.data;
+        data.questions.forEach(function(question) {
+          if (Array.isArray(question.answer)) {
+            question.answer.sort();
+          }
+        });
         resolve();
       }, function() {
         reject();
@@ -177,7 +229,40 @@ app.factory('quizzSrv', function($http, $location, $q, $timeout) {
   };
 
   srv.getQuestion = function(n) {
-    return quizz.questions[n - 1];
+    return quizz.questions[n];
+  };
+
+  srv.getNQuestions = function() {
+    return quizz.questions.length;
+  };
+
+  srv.stopQuizz = function() {
+    $timeout.cancel(quizz.timeout);
+    quizz.endTime = moment();
+  };
+
+  srv.getResult = function() {
+    var result = { score : 0, questions : quizz.questions };
+    result.questions.forEach(function(question) {
+      if (question.answer) {
+        question.answered = true;
+      }
+      if (question.answered) {
+        if (Array.isArray(question.answer)) {
+          question.answer.sort();
+        }
+        question.correctAnswer = angular.equals(question.answer, question.question.answer);
+        if (question.correctAnswer) {
+          result.score += 1;
+        } else {
+          result.score -= 0.5;
+        }
+      }
+    });
+    if (result.score < 0) {
+      result.score = 0;
+    }
+    return result;
   };
 
   return srv;

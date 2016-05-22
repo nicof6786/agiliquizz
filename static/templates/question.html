@@ -1,6 +1,21 @@
-<div layout="column" layout-fill>
+<div layout="column">
   <ng-include src="'static/templates/toolbar.html'"></ng-include>
-  <md-content layout-padding>
-    {{question|json}}
+  <md-content layout="column" layout-padding>
+    <h2 class="md-title" style="text-align: center">{{question.question.title}}</h2>
+    <ng-include src="'static/templates/question/' + question.question.type + '.html'"></ng-include>
+    <div layout="row" layout-align="space-around center">
+      <div>
+        <md-button ng-disabled="!hasPrevious()" ng-click="previous()" class="md-primary md-raised"><md-icon>navigate_before</md-icon>Précédent</md-button>
+      </div>
+      <div>
+        {{nQuestion}} / {{nQuestions}}
+      </div>
+      <div>
+        <md-button ng-disabled="!hasNext()" ng-click="next()" class="md-primary md-raised">Suivant<md-icon>navigate_next</md-icon></md-button>
+      </div>
+    </div>
+    <div layout="row" layout-align="space-around" ng-if="!hasNext()">
+      <md-button href="#/result" class="md-warn md-raised">Terminer</md-button>
+    </div>
   </md-content>
 </div>
