@@ -1,7 +1,3 @@
-Urls :
- - / -> accueil... (si un quizz le clear ?)
- - /load/:dataUrl -> chargement d'un quizz... redirect /new
- - /new -> création d'un nouveau quizz (redirect accueil si pas de données, si un quizz le clear ?)
- - /question/:questionNum -> question (si pas de quizz redirect new, si quizz terminé redirect result)
- - /questions -> résumé (si pas de quizz redirect new, si quizz terminé redirect result)
- - /result -> résultat (si pas de quizz redirect new, si quizz pas terminé redirect questions)
+Ajout bouton de rÃ©init de question
+Template page rÃ©sultat
+Ajout url /questions avec rÃ©sumÃ© avant rÃ©sultat + bouton nav vers cette page
