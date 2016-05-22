@@ -2,61 +2,150 @@
   "title" : "Pass Agility",
   "questions" : [
     {
-      "title" : "Question 1 ?",
+      "title" : "Quelle est la limite de hauteur au garrot pour les chiens de catégorie A ?",
+      "type" : "single-choice",
+      "options" : [
+        { "value" : "35", "label" : "Moins de 35 cm" },
+        { "value" : "37", "label" : "Moins de 37 cm" },
+        { "value" : "42", "label" : "Moins de 42 cm" },
+        { "value" : "47", "label" : "Moins de 47 cm" }
+      ],
+      "answer" : "37"
+    },
+    {
+      "title" : "Quelle est la hauteur minimum au garrot pour les chiens de catégorie B ?",
+      "type" : "single-choice",
+      "options" : [
+        { "value" : "35", "label" : "35 cm" },
+        { "value" : "37", "label" : "37 cm" },
+        { "value" : "42", "label" : "42 cm" },
+        { "value" : "47", "label" : "47 cm" }
+      ],
+      "answer" : "37"
+    },
+    {
+      "title" : "Quelle est la limite de hauteur au garrot pour les chiens de catégorie B ?",
+      "type" : "single-choice",
+      "options" : [
+        { "value" : "42", "label" : "Moins de 42 cm" },
+        { "value" : "45", "label" : "Moins de 45 cm" },
+        { "value" : "47", "label" : "Moins de 47 cm" },
+        { "value" : "50", "label" : "Moins de 50 cm" }
+      ],
+      "answer" : "47"
+    },
+    {
+      "title" : "Quelle est la hauteur minimum au garrot pour les chiens de catégorie C ?",
+      "type" : "single-choice",
+      "options" : [
+        { "value" : "42", "label" : "42 cm" },
+        { "value" : "45", "label" : "45 cm" },
+        { "value" : "47", "label" : "47 cm" },
+        { "value" : "50", "label" : "50 cm" }
+      ],
+      "answer" : "47"
+    },
+    {
+      "title" : "Quelle est la limite de hauteur au garrot pour les chiens de catégorie C ?",
+      "type" : "single-choice",
+      "options" : [
+        { "value" : "47", "label" : "Moins de 47 cm" },
+        { "value" : "57", "label" : "Moins de 57 cm" },
+        { "value" : "67", "label" : "Moins de 67 cm" },
+        { "value" : "aucune", "label" : "Aucune" }
+      ],
+      "answer" : "aucune"
+    },
+    {
+      "title" : "Quelle sont les raisons possibles pur qu'un chien soit en catégorie D ?",
+      "type" : "multiple-choice",
+      "options" : [
+        { "value" : "molosse", "label" : "Le chien est un molosse" },
+        { "value" : "hauteur", "label" : "Le chien a une hauteur au garrot de 57 cm ou plus" },
+        { "value" : "40kg24ms", "label" : "Le chien pèse plus de 40 kg et court à une vitesse inférieure à 2,40 m/s" },
+        { "value" : "50kg", "label" : "Le chien pèse plus de 50 kg" }
+      ],
+      "answer" : [ "molosse", "40kg24ms" ]
+    },
+    {
+      "title" : "Quelle sont les paramètres pouvant influencer le TPS déterminé par le juge ?",
+      "type" : "multiple-choice",
+      "options" : [
+        { "value" : "terrain", "label" : "La nature du terrain" },
+        { "value" : "meteo", "label" : "Les conditions météorologiques" },
+        { "value" : "difficulte", "label" : "La difficulté présumée du parcours" },
+        { "value" : "categorie", "label" : "La catégorie du chien" }
+      ],
+      "answer" : [ "terrain", "meteo", "difficulte" ]
+    },
+    {
+      "title" : "Sur certaines épreuves le TPS est déterminé à la fin de l'épreuve en ajoutant un certain pourcentage au temps réalisé par le chien le plus rapide ayant le moins de pénalité",
+      "type" : "true-false",
+      "answer" : "true"
+    },
+    {
+      "title" : "Sur certaines épreuves le TPS est déterminé à la fin de l'épreuve en ajoutant un certain pourcentage au temps réalisé par le chien le moins rapide ayant le moins de pénalité",
       "type" : "true-false",
       "answer" : "false"
     },
     {
-      "title" : "Question 2 ?",
+      "title" : "Que signifie TPS ?",
       "type" : "single-choice",
-      "options" : {
-        "opt1" : "Réponse 1",
-        "opt2" : "Réponse 2",
-        "opt3" : "Réponse 3",
-        "opt4" : "Obi Wan Kenobi"
-      },
-      "answer" : "opt2"
+      "options" : [
+        { "value" : "tps", "label" : "Temps de Parcours Standard" },
+        { "value" : "passage", "label" : "Temps de Passage Standard" },
+        { "value" : "passage-secondes", "label" : "Temps de Passage en Secondes" },
+        { "value" : "secondes", "label" : "Temps de Parcours en Secondes" }
+      ],
+      "answer" : "tps"
     },
     {
-      "title" : "Question 3 ?",
+      "title" : "Que signifie TMP ?",
+      "type" : "single-choice",
+      "options" : [
+        { "value" : "tmp", "label" : "Temps Maximum de Parcours" },
+        { "value" : "passage", "label" : "Temps Maximum de Passage" },
+        { "value" : "penalites", "label" : "Taux Maximum de Pénalités" },
+        { "value" : "minimum", "label" : "Temps Minimum de Passage" }
+      ],
+      "answer" : "tmp"
+    },
+    {
+      "title" : "Quelles sont les raisons pouvant entraîner une pénalité",
       "type" : "multiple-choice",
-      "options" : {
-        "opt1" : "Réponse 1",
-        "opt2" : "Réponse 2",
-        "opt3" : "Réponse 3",
-        "opt4" : "Obi Wan Kenobi"
-      },
-      "answer" : [ "opt3", "opt4" ]
+      "options" : [
+        { "value" : "tmp", "label" : "Dépassement du TMP" },
+        { "value" : "tps", "label" : "Dépassement du TPS" },
+        { "value" : "faute", "label" : "Les fautes" },
+        { "value" : "refus", "label" : "Les refus" }
+      ],
+      "answer" : [ "tps", "faute", "refus" ]
     },
     {
-      "title" : "Question 4 ?",
+      "title" : "Les jouets et friandises sont autorisées durant le parcours",
+      "type" : "true-false",
+      "answer" : "false"
+    },
+    {
+      "title" : "La laisse est autorisée sur le terrain",
       "type" : "true-false",
       "answer" : "true"
     },
     {
-      "title" : "Question 5 ?",
+      "title" : "Les colliers et harnais sont autorisés durant le parcours",
       "type" : "true-false",
-      "answer" : "true"
+      "answer" : "false"
     },
     {
-      "title" : "Question 6 ?",
-      "type" : "true-false",
-      "answer" : "true"
-    },
-    {
-      "title" : "Question 7 ?",
-      "type" : "true-false",
-      "answer" : "true"
-    },
-    {
-      "title" : "Question 8 ?",
-      "type" : "true-false",
-      "answer" : "true"
-    },
-    {
-      "title" : "Question 9 ?",
-      "type" : "true-false",
-      "answer" : "true"
+      "title" : "A quel moment démarre le chrono ?",
+      "type" : "single-choice",
+      "options" : [
+        { "value" : "ligne", "label" : "Lorsque le chien franchit la ligne de départ" },
+        { "value" : "obstacle", "label" : "Lorsque le chien franchit le premier obstacle" },
+        { "value" : "juge", "label" : "Au signal du juge" },
+        { "value" : "courrir", "label" : "Lorsque le chien commence à courrir" }
+      ],
+      "answer" : "ligne"
     }
   ]
 }

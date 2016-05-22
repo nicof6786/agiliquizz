@@ -1,5 +1,5 @@
 <div layout="row" layout-wrap>
-  <div ng-repeat="(value, label) in question.question.options" flex="50" layout="row" layout-align="center">
-    <md-checkbox ng-click="toggle(value)" ng-checked="isChecked(value)">{{label}}</md-radio-button>
+  <div ng-repeat="option in question.question.options" flex="50" layout="row" layout-align="center">
+    <md-checkbox ng-click="toggle(option.value)" ng-checked="isChecked(option.value)">{{option.label}}</md-radio-button>
   </div>
 </div>

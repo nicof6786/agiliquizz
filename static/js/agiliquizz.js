@@ -69,7 +69,7 @@ app.controller('NewCtrl', function($location, $scope, quizzSrv) {
   $scope.title = quizzSrv.getTitle();
   $scope.maxQuestions = quizzSrv.getMaxQuestions();
   $scope.questions = $scope.maxQuestions < 10 ? $scope.maxQuestions : 10;
-  $scope.time = Math.ceil($scope.questions / 2);
+  $scope.time = Math.ceil($scope.questions / 4);
 
   $scope.start = function() {
     quizzSrv.startQuizz($scope.questions, $scope.time);
@@ -197,6 +197,15 @@ app.controller('ResultCtrl', function($location, $scope, $mdDialog, quizzSrv) {
   $scope.title = quizzSrv.getTitle();
   $scope.result = quizzSrv.getResult();
 
+  $scope.getAnswer = function(question, answer) {
+    if (!answer) {
+      return "";
+    }
+    return question.question.options.find(function(option) {
+      return option.value === answer;
+    }).label;
+  };
+
   if (quizzSrv.quizzTimedOut()) {
     $mdDialog.show($mdDialog.alert()
           .title('Temps écoulé')
@@ -248,6 +257,12 @@ app.factory('quizzSrv', function($http, $location, $q, $timeout) {
     .slice(0, nQuestions)
     .map(function(question) {
       return { question : question };
+    });
+
+    quizz.questions.forEach(function(question) {
+      if (question.question.options) {
+        question.question.options.shuffle();
+      }
     });
 
     quizz.endTime = moment().add(time, 'minutes');
