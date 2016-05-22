@@ -1,0 +1,16 @@
+<div class="answer" flex="50">
+  <span ng-show="!question.answered">Non répondu</span>
+  <span ng-show="question.answered">
+    <span ng-repeat="answer in question.answer">
+      {{question.question.options[answer]}}
+      <span ng-show="!$last">, </span>
+    </span>
+  </span>
+</div>
+<div flex="50">
+  <span ng-repeat="answer in question.question.answer">
+    {{question.question.options[answer]}}
+    <span ng-show="!$last">, </span>
+  </span>
+</span>
+</div>

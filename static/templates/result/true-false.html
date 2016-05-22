@@ -1,0 +1,9 @@
+<div class="answer" flex="50">
+  <span ng-show="!question.answered">Non répondu</span>
+  <span ng-show="question.answer == 'true'">Vrai</span>
+  <span ng-show="question.answer == 'false'">Faux</span>
+</div>
+<div flex="50">
+  <span ng-show="question.question.answer == 'true'">Vrai</span>
+  <span ng-show="question.question.answer == 'false'">Faux</span>
+</div>

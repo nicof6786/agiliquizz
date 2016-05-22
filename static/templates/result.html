@@ -1,7 +1,28 @@
 <div layout="column">
   <ng-include src="'static/templates/toolbar.html'"></ng-include>
   <md-content layout="column" layout-padding>
-    <h2 class="md-title" style="text-align: center">Score : {{result.score}} / {{result.questions.length}}</h2>
-    {{result|json}}
+    <h2 class="md-display-1" style="text-align: center">Score : {{result.score}} / {{result.questions.length}}</h2>
+    <md-list>
+      <md-list-item layout="row">
+        <h3 class="md-title" flex="40">Question</h3>
+        <h3 class="md-title" flex="25">Réponse</h3>
+        <h3 class="md-title" flex="25">Correction</h3>
+        <h3 class="md-title" flex="10">Score</h3>
+      </md-list-item>
+      <md-list-item ng-repeat="question in result.questions" layout="row">
+        <div flex="40">{{question.question.title}}</div>
+        <div flex="50" ng-class="{ correct : question.answered && question.correctAnswer, wrong : question.answered && !question.correctAnswer }">
+          <ng-include layout="row" src="'static/templates/result/' + question.question.type + '.html'"></ng-include>
+        </div>
+        <div flex="10">
+          <span ng-show="!question.answered">0</span>
+          <span ng-show="question.answered && question.correctAnswer">+1</span>
+          <span ng-show="question.answered && !question.correctAnswer">-0,5</span>
+        </div>
+      </md-list-item>
+    </md-list>
+    <div layout="row" layout-align="space-around">
+      <md-button class="md-primary md-raised" href="#/new">Nouveau quizz</md-button>
+    </div>
   </md-content>
 </div>

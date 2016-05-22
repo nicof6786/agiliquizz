@@ -1,0 +1,7 @@
+<div class="answer" flex="50">
+  <span ng-show="!question.answered">Non répondu</span>
+  <span ng-show="question.answered">{{question.question.options[question.answer]}}</span>
+</div>
+<div flex="50">
+  {{question.question.options[question.question.answer]}}
+</div>

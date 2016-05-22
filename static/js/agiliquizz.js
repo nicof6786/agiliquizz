@@ -69,7 +69,7 @@ app.controller('NewCtrl', function($location, $scope, quizzSrv) {
   $scope.title = quizzSrv.getTitle();
   $scope.maxQuestions = quizzSrv.getMaxQuestions();
   $scope.questions = $scope.maxQuestions < 10 ? $scope.maxQuestions : 10;
-  $scope.time = Math.ceil($scope.questions * 3 / 4);
+  $scope.time = Math.ceil($scope.questions / 2);
 
   $scope.start = function() {
     quizzSrv.startQuizz($scope.questions, $scope.time);
@@ -77,7 +77,7 @@ app.controller('NewCtrl', function($location, $scope, quizzSrv) {
   };
 });
 
-app.controller('QuestionCtrl', function($interval, $location, $routeParams, $scope, quizzSrv) {
+app.controller('QuestionCtrl', function($interval, $location, $routeParams, $scope, $mdDialog, quizzSrv) {
   if (!quizzSrv.hasData()) {
     return $location.url('/');
   }
@@ -131,18 +131,60 @@ app.controller('QuestionCtrl', function($interval, $location, $routeParams, $sco
     } else {
       $scope.question.answer.splice(index, 1);
     }
+    if ($scope.question.answer.length === 0) {
+      delete $scope.question.answer;
+    }
   };
 
   $scope.isChecked = function(value) {
     return $scope.question.answer && $scope.question.answer.indexOf(value) !== -1;
-  }
+  };
+
+  $scope.clearAnswer = function() {
+    delete $scope.question.answer;
+  };
+
+  $scope.confirmDone = function(event) {
+    var text = 'Êtes-vous certain d\'avoir terminer ?';
+    var nUnanswered = quizzSrv.getNUnanswered();
+    if (nUnanswered !== 0) {
+      text += ' Vous avez ' + nUnanswered;
+      if (nUnanswered === 1) {
+        text += ' question non répondue.';
+      } else {
+        text += ' questions non répondues.';
+      }
+    }
+
+    var confirm = $mdDialog.confirm()
+          .title('Terminer ?')
+          .textContent(text)
+          .targetEvent(event)
+          .ok('Oui')
+          .cancel('Non');
+    $mdDialog.show(confirm).then(function() {
+      $location.url('/result');
+    });
+  };
+
+  $scope.confirmCancel = function(event) {
+    var confirm = $mdDialog.confirm()
+          .title('Annuler ?')
+          .textContent('Êtes vous certain de vouloir annuler ce quizz ?')
+          .targetEvent(event)
+          .ok('Oui')
+          .cancel('Non');
+    $mdDialog.show(confirm).then(function() {
+      $location.url('/new');
+    });
+  };
 
   $scope.$on("$destroy", function() {
     $interval.cancel(rtInterval);
   });
 });
 
-app.controller('ResultCtrl', function($location, $scope, quizzSrv) {
+app.controller('ResultCtrl', function($location, $scope, $mdDialog, quizzSrv) {
   if (!quizzSrv.hasData()) {
     return $location.url('/');
   }
@@ -154,6 +196,13 @@ app.controller('ResultCtrl', function($location, $scope, quizzSrv) {
 
   $scope.title = quizzSrv.getTitle();
   $scope.result = quizzSrv.getResult();
+
+  if (quizzSrv.quizzTimedOut()) {
+    $mdDialog.show($mdDialog.alert()
+          .title('Temps écoulé')
+          .textContent('Le temps imparti est écoulé.')
+          .ok('OK'));
+  }
 });
 
 app.factory('quizzSrv', function($http, $location, $q, $timeout) {
@@ -204,8 +253,13 @@ app.factory('quizzSrv', function($http, $location, $q, $timeout) {
     quizz.endTime = moment().add(time, 'minutes');
 
     quizz.timeout = $timeout(function() {
+      quizz.timedOut = true;
       $location.url('/result');
     }, time * 60000);
+  };
+
+  srv.quizzTimedOut = function() {
+    return quizz.timedOut === true;
   };
 
   srv.clearQuizz = function() {
@@ -234,6 +288,16 @@ app.factory('quizzSrv', function($http, $location, $q, $timeout) {
 
   srv.getNQuestions = function() {
     return quizz.questions.length;
+  };
+
+  srv.getNUnanswered = function() {
+    var nUnanswered = 0;
+    quizz.questions.forEach(function(question) {
+      if (!question.answer) {
+        nUnanswered++;
+      }
+    });
+    return nUnanswered;
   };
 
   srv.stopQuizz = function() {
