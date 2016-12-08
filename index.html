@@ -6,12 +6,12 @@
   <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.0-rc4/angular-material.min.css">
 </head>
 <body ng-app="AgiliQuizz" ng-cloak>
-  <div ng-controller="QuizzController as quizzCtrl" layout="column" layout-fill>
+  <div ng-controller="QuizzController" layout="column" layout-fill>
     <md-toolbar>
       <div class="md-toolbar-tools">
-        <h1>AgiliQuizz - {{quizzCtrl.title}}</h1>
+        <h1>AgiliQuizz - {{title}}</h1>
         <span flex></span>
-        {{quizz.minutesRemaining}}:{{quizz.secondsRemaining}}
+        {{quizz.timeRemaining}}
         <span flex></span>
         <md-button>
           Right Bar Button
@@ -21,7 +21,7 @@
   
     <md-content layout-padding>
       <div class="view-animate-container">
-        <div ng-view class="view-animate" onload="quizzCtrl.loadDataIfNecessary()"></div>
+        <div ng-view class="view-animate" onload="loadDataIfNecessary()"></div>
       </div>
     </md-content>
   </div>
@@ -52,8 +52,7 @@
     
     app.config(function($routeProvider) {
       $routeProvider.when('/:dataUrl', {
-        templateUrl : 'static/templates/new.html',
-        controller : 'NewController'
+        templateUrl : 'static/templates/new.html'
       }).when('/:dataUrl/question/:questionNum', {
         templateUrl : 'static/templates/question.html',
         controller : 'QuestionController'
@@ -69,62 +68,69 @@
       amMoment.changeLocale('fr');
     });
     
-    app.factory('quizzService', function($http, moment, $interval, $timeout) {
-      var service = {};
-      var questions = null;
-      var quizz = null;
+    app.controller('QuizzController', function($routeParams, $location, $scope, $http, moment, $interval, $timeout) {
+      var currentDataUrl = null;
       
-      service.loadQuizz = function(dataUrl, callback) {
-        $http.get(decodeURIComponent(dataUrl)).then(function(response) {
-          questions = response.data.questions;
-          callback(response.data.title);
-        });
-        //TODO gérer 404
+      var goTo = function(url) {
+        $location.url('/' + encodeURIComponent(currentDataUrl) + url);
       };
       
-      return service;
-    });
-    
-    app.controller('QuizzController', function($routeParams, quizzService, $location) {
-      var currentDataUrl = null;
-      this.title = 'Chargement...';
-      
-      this.loadDataIfNecessary = function() {
+      $scope.loadDataIfNecessary = function() {
         if ($routeParams.dataUrl != currentDataUrl) {
           currentDataUrl = $routeParams.dataUrl;
-          quizzService.loadQuizz(currentDataUrl, function(title) {
-            this.title = title;
-            $location.url('/' + encodeURIComponent(currentDataUrl));
+          
+          $scope.title = 'Chargement...';
+          $scope.questions = false;
+          $scope.params = { numOfQuestions : 10, maxTime : 8 };
+          $scope.quizz = false;
+          
+          $http.get(decodeURIComponent(currentDataUrl)).then(function(response) {
+            $scope.title = response.data.title;
+            $scope.questions = response.data.questions;
+            if ($scope.questions.length < 10) {
+              $scope.params.numOfQuestions = $scope.questions.length;
+            }
+            $scope.params.maxTime = Math.ceil($scope.params.numOfQuestions * 3 / 4);
+            goTo('');
           });
+          //TODO gérer 404
         }
       };
-    });
-    
-    app.controller('NewController', function(quizzService) {
-      this.newQuizz = {};
-      this.newQuizz.numOfQuestions = numOfQuestions < 10 ? numOfQuestions : 10;
-      this.newQuizz.maxTime = Math.ceil(this.quizz.numOfQuestions * 3 / 4);
       
-      this.startQuizz = function() {
-        quizzService.startQuizz(this.newQuizz);
-        $scope.quizz = {} + $scope.newQuizz;
-        $scope.quizz.questions = questions.slice(0).shuffle().slice(0, $scope.quizz.numOfQuestions).map(function(question) {
+      $scope.startQuizz = function() {
+        $scope.quizz = angular.extend({}, $scope.params);
+        
+        $scope.quizz.questions = $scope.questions.slice(0).shuffle().slice(0, $scope.quizz.numOfQuestions).map(function(question) {
           return { question : question };
         });
-        endTime = moment().add($scope.quizz.maxTime, 'minutes');
-        $interval(function() {
-          var timeRemaining = moment.duration(endTime.diff(moment()));
-          $scope.quizz.minutesRemaining = timeRemaining.minutes();
-          $scope.quizz.secondsRemaining = '' + timeRemaining.seconds();
-          if ($scope.quizz.secondsRemaining.length < 2) {
-            $scope.quizz.secondsRemaining = '0' + $scope.quizz.secondsRemaining;
+        
+        var endTime = moment().add($scope.quizz.maxTime, 'minutes');
+        
+        var zeroPad = function(i) {
+          var s = '' + i;
+          while (s.length < 2) {
+            s = '0' + s;
           }
+          return s;
+        };
+        
+        var timeRemainingInterval = $interval(function() {
+          var timeRemaining = moment.duration(endTime.diff(moment()));
+          $scope.quizz.timeRemaining = zeroPad(timeRemaining.minutes()) + ':' + zeroPad(timeRemaining.seconds());
         }, 100, $scope.quizz.maxTime * 600);
-        $timeout(function() {
+        
+        var endTimeout = $timeout(function() {
           alert('timeout!');
           //TODO timeout
         }, $scope.quizz.maxTime * 60000);
-        $location.url('/' + encodeURIComponent(currentDataUrl) + '/question/1');
+        
+        $scope.quizz.cancel = function() {
+          $interval.cancel(timeRemainingInterval);
+          $timeout.cancel(endTimeout);
+          $scope.quizz = false;
+        };
+        
+        goTo('/question/1');
       };
     });
     
