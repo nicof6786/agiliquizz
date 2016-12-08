@@ -6,13 +6,25 @@
   <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.0-rc4/angular-material.min.css">
 </head>
 <body ng-app="AgiliQuizz" ng-cloak>
-  <md-content layout-padding>
-    <div ng-controller="QuizzController as quizzCtrl" class="view-animate-container">
-      <h1>AgiliQuizz - {{data.title}}</h1>
-      
-      <div ng-view class="view-animate" onload="quizzCtrl.loadDataIfNecessary()"></div>
-    </div>
-  </md-content>
+  <div ng-controller="QuizzController as quizzCtrl" layout="column" layout-fill>
+    <md-toolbar>
+      <div class="md-toolbar-tools">
+        <h1>AgiliQuizz - {{quizzCtrl.title}}</h1>
+        <span flex></span>
+        {{quizz.minutesRemaining}}:{{quizz.secondsRemaining}}
+        <span flex></span>
+        <md-button>
+          Right Bar Button
+        </md-button>
+      </div>
+    </md-toolbar>
+  
+    <md-content layout-padding>
+      <div class="view-animate-container">
+        <div ng-view class="view-animate" onload="quizzCtrl.loadDataIfNecessary()"></div>
+      </div>
+    </md-content>
+  </div>
   
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-animate.min.js"></script>
@@ -22,8 +34,21 @@
 
   <script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.0-rc4/angular-material.min.js"></script>
   
-  <script type="text/javascript">    
-    var app = angular.module('AgiliQuizz', [ 'ngMaterial', 'ngRoute' ]);
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.13.0/moment-with-locales.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-moment/1.0.0-beta.6/angular-moment.min.js"></script>
+  
+  <script type="text/javascript">
+    Array.prototype.shuffle = function () {
+      for (var i = this.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var temp = this[i];
+        this[i] = this[j];
+        this[j] = temp;
+      }
+      return this;
+    };
+    
+    var app = angular.module('AgiliQuizz', [ 'ngMaterial', 'ngRoute', 'angularMoment' ]);
     
     app.config(function($routeProvider) {
       $routeProvider.when('/:dataUrl', {
@@ -40,30 +65,67 @@
       }).otherwise('/404');
     });
     
-    app.controller('QuizzController', function($routeParams, $scope, $http, $location) {
+    app.run(function(amMoment) {
+      amMoment.changeLocale('fr');
+    });
+    
+    app.factory('quizzService', function($http, moment, $interval, $timeout) {
+      var service = {};
+      var questions = null;
+      var quizz = null;
+      
+      service.loadQuizz = function(dataUrl, callback) {
+        $http.get(decodeURIComponent(dataUrl)).then(function(response) {
+          questions = response.data.questions;
+          callback(response.data.title);
+        });
+        //TODO gérer 404
+      };
+      
+      return service;
+    });
+    
+    app.controller('QuizzController', function($routeParams, quizzService, $location) {
       var currentDataUrl = null;
+      this.title = 'Chargement...';
       
       this.loadDataIfNecessary = function() {
         if ($routeParams.dataUrl != currentDataUrl) {
           currentDataUrl = $routeParams.dataUrl;
-          $http.get(decodeURIComponent(currentDataUrl)).then(function(response) {
-            $scope.data = response.data;
-            $scope.quizz = {};
-            $scope.quizz.numOfQuestions = $scope.data.questions.length < 10 ? $scope.data.questions.length : 10;
-            $scope.quizz.maxTime = Math.ceil($scope.quizz.numOfQuestions * 3 / 4);
+          quizzService.loadQuizz(currentDataUrl, function(title) {
+            this.title = title;
+            $location.url('/' + encodeURIComponent(currentDataUrl));
           });
-          $location.url('/' + encodeURIComponent(currentDataUrl));
         }
-      };
-      
-      this.startQuizz = function() {
-        //TODO init quizz.questions
-        $location.url('/' + encodeURIComponent(currentDataUrl) + '/question/1');
       };
     });
     
-    app.controller('NewController', function() {
+    app.controller('NewController', function(quizzService) {
+      this.newQuizz = {};
+      this.newQuizz.numOfQuestions = numOfQuestions < 10 ? numOfQuestions : 10;
+      this.newQuizz.maxTime = Math.ceil(this.quizz.numOfQuestions * 3 / 4);
       
+      this.startQuizz = function() {
+        quizzService.startQuizz(this.newQuizz);
+        $scope.quizz = {} + $scope.newQuizz;
+        $scope.quizz.questions = questions.slice(0).shuffle().slice(0, $scope.quizz.numOfQuestions).map(function(question) {
+          return { question : question };
+        });
+        endTime = moment().add($scope.quizz.maxTime, 'minutes');
+        $interval(function() {
+          var timeRemaining = moment.duration(endTime.diff(moment()));
+          $scope.quizz.minutesRemaining = timeRemaining.minutes();
+          $scope.quizz.secondsRemaining = '' + timeRemaining.seconds();
+          if ($scope.quizz.secondsRemaining.length < 2) {
+            $scope.quizz.secondsRemaining = '0' + $scope.quizz.secondsRemaining;
+          }
+        }, 100, $scope.quizz.maxTime * 600);
+        $timeout(function() {
+          alert('timeout!');
+          //TODO timeout
+        }, $scope.quizz.maxTime * 60000);
+        $location.url('/' + encodeURIComponent(currentDataUrl) + '/question/1');
+      };
     });
     
     app.controller('QuestionController', function() {
