@@ -51,17 +51,18 @@
     var app = angular.module('AgiliQuizz', [ 'ngMaterial', 'ngRoute', 'angularMoment' ]);
     
     app.config(function($routeProvider) {
-      $routeProvider.when('/:dataUrl', {
-        templateUrl : 'static/templates/new.html'
+      $routeProvider.when('/', {
+        templateUrl : 'static/templates/start.html'
+      }).when('/:dataUrl', {
+        templateUrl : 'static/templates/new.html',
+        controller : 'NewController'
       }).when('/:dataUrl/question/:questionNum', {
         templateUrl : 'static/templates/question.html',
         controller : 'QuestionController'
       }).when('/:dataUrl/result', {
         templateUrl : 'static/templates/result.html',
         controller : 'ResultController'
-      }).when('/404', {
-        templateUrl : 'static/templates/404.html'
-      }).otherwise('/404');
+      }).otherwise('/');
     });
     
     app.run(function(amMoment) {
@@ -128,14 +129,25 @@
           $interval.cancel(timeRemainingInterval);
           $timeout.cancel(endTimeout);
           $scope.quizz = false;
+          goTo('');
         };
         
         goTo('/question/1');
       };
     });
     
-    app.controller('QuestionController', function() {
-      
+    app.controller('NewController', function($scope) {
+      if ($scope.quizz) {
+        $scope.quizz.cancel();
+        return;
+      }
+    });
+    
+    app.controller('QuestionController', function($scope, $routeParams) {
+      if (!$scope.quizz) {
+        goTo('');
+      }
+      $scope.question = $scope.quizz.questions[$routeParams.questionNum];
     });
     
     app.controller('ResultController', function() {
