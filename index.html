@@ -25,7 +25,7 @@
   <script type="text/javascript">    
     var app = angular.module('AgiliQuizz', [ 'ngMaterial', 'ngRoute' ]);
     
-    app.config(function($routeProvider, $locationProvider) {
+    app.config(function($routeProvider) {
       $routeProvider.when('/:dataUrl', {
         templateUrl : 'static/templates/new.html',
         controller : 'NewController'
@@ -38,8 +38,6 @@
       }).when('/404', {
         templateUrl : 'static/templates/404.html'
       }).otherwise('/404');
-
-      $locationProvider.html5Mode(true);
     });
     
     app.controller('QuizzController', function($routeParams, $scope, $http, $location) {

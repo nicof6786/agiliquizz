@@ -7,8 +7,4 @@ app.get('/agiliquizz/*', function (req, res) {
     res.sendFile(__dirname + '/index.html');
 });
 
-app.get('*', function (req, res) {
-    res.redirect('/agiliquizz/');
-});
-
 app.listen(8086);
