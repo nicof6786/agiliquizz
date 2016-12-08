@@ -1,1 +1,13 @@
-new
+<form name="newQuizzForm">
+  <div layout="column">
+    <md-input-container>
+      <label>Nombre de questions</label>
+      <input type="number" ng-model="quizz.numOfQuestions" required min="1" max="{{data.questions.length}}">
+    </md-input-container>
+    <md-input-container>
+      <label>Temps maximum (minutes)</label>
+      <input type="number" ng-model="quizz.maxTime" required min="1" max="{{data.questions.length * 2}}">
+    </md-input-container>
+    <md-button class="md-primary md-raised" ng-click="quizzCtrl.startQuizz()">Démarrer</md-button>
+  </div>
+</form>

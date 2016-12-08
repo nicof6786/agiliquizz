@@ -3,41 +3,65 @@
   <title>AgiliQuizz</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <base href="/agiliquizz/">
-  <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.0-rc2/angular-material.min.css">
+  <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.0-rc4/angular-material.min.css">
 </head>
 <body ng-app="AgiliQuizz" ng-cloak>
-  <div ng-controller="QuizzController" class="view-animate-container">
-    <div ng-view class="view-animate"></div>
-  </div>
+  <md-content layout-padding>
+    <div ng-controller="QuizzController as quizzCtrl" class="view-animate-container">
+      <h1>AgiliQuizz - {{data.title}}</h1>
+      
+      <div ng-view class="view-animate" onload="quizzCtrl.loadDataIfNecessary()"></div>
+    </div>
+  </md-content>
   
-  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular.min.js"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-animate.min.js"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-aria.min.js"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-messages.min.js"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-route.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-animate.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-aria.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-messages.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-route.min.js"></script>
 
-  <script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.0-rc2/angular-material.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.0-rc4/angular-material.min.js"></script>
   
   <script type="text/javascript">    
-    var app = angular.module('AgiliQuizz', ['ngMaterial', 'ngRoute']);
+    var app = angular.module('AgiliQuizz', [ 'ngMaterial', 'ngRoute' ]);
     
     app.config(function($routeProvider, $locationProvider) {
-      $routeProvider.when('/', {
+      $routeProvider.when('/:dataUrl', {
         templateUrl : 'static/templates/new.html',
         controller : 'NewController'
-      }).when('/question/:questionNum', {
+      }).when('/:dataUrl/question/:questionNum', {
         templateUrl : 'static/templates/question.html',
         controller : 'QuestionController'
-      }).when('/resultat', {
+      }).when('/:dataUrl/result', {
         templateUrl : 'static/templates/result.html',
         controller : 'ResultController'
-      }).otherwise('/');
+      }).when('/404', {
+        templateUrl : 'static/templates/404.html'
+      }).otherwise('/404');
 
       $locationProvider.html5Mode(true);
     });
     
-    app.controller('QuizzController', function($http, $scope) {
+    app.controller('QuizzController', function($routeParams, $scope, $http, $location) {
+      var currentDataUrl = null;
       
+      this.loadDataIfNecessary = function() {
+        if ($routeParams.dataUrl != currentDataUrl) {
+          currentDataUrl = $routeParams.dataUrl;
+          $http.get(decodeURIComponent(currentDataUrl)).then(function(response) {
+            $scope.data = response.data;
+            $scope.quizz = {};
+            $scope.quizz.numOfQuestions = $scope.data.questions.length < 10 ? $scope.data.questions.length : 10;
+            $scope.quizz.maxTime = Math.ceil($scope.quizz.numOfQuestions * 3 / 4);
+          });
+          $location.url('/' + encodeURIComponent(currentDataUrl));
+        }
+      };
+      
+      this.startQuizz = function() {
+        //TODO init quizz.questions
+        $location.url('/' + encodeURIComponent(currentDataUrl) + '/question/1');
+      };
     });
     
     app.controller('NewController', function() {
