@@ -1,0 +1,263 @@
+{
+  "pass-agility": {
+    "title" : "Pass Agility",
+    "questions" : [
+      {
+        "title" : "Quelle est la limite de hauteur au garrot pour les chiens de catégorie A ?",
+        "type" : "single-choice",
+        "options" : [
+          { "value" : "35", "label" : "Moins de 35 cm" },
+          { "value" : "37", "label" : "Moins de 37 cm" },
+          { "value" : "42", "label" : "Moins de 42 cm" },
+          { "value" : "47", "label" : "Moins de 47 cm" }
+        ],
+        "answer" : "37"
+      },
+      {
+        "title" : "Quelle est la hauteur minimum au garrot pour les chiens de catégorie B ?",
+        "type" : "single-choice",
+        "options" : [
+          { "value" : "35", "label" : "35 cm" },
+          { "value" : "37", "label" : "37 cm" },
+          { "value" : "42", "label" : "42 cm" },
+          { "value" : "47", "label" : "47 cm" }
+        ],
+        "answer" : "37"
+      },
+      {
+        "title" : "Quelle est la limite de hauteur au garrot pour les chiens de catégorie B ?",
+        "type" : "single-choice",
+        "options" : [
+          { "value" : "42", "label" : "Moins de 42 cm" },
+          { "value" : "45", "label" : "Moins de 45 cm" },
+          { "value" : "47", "label" : "Moins de 47 cm" },
+          { "value" : "50", "label" : "Moins de 50 cm" }
+        ],
+        "answer" : "47"
+      },
+      {
+        "title" : "Quelle est la hauteur minimum au garrot pour les chiens de catégorie C ?",
+        "type" : "single-choice",
+        "options" : [
+          { "value" : "42", "label" : "42 cm" },
+          { "value" : "45", "label" : "45 cm" },
+          { "value" : "47", "label" : "47 cm" },
+          { "value" : "50", "label" : "50 cm" }
+        ],
+        "answer" : "47"
+      },
+      {
+        "title" : "Quelle est la limite de hauteur au garrot pour les chiens de catégorie C ?",
+        "type" : "single-choice",
+        "options" : [
+          { "value" : "47", "label" : "Moins de 47 cm" },
+          { "value" : "57", "label" : "Moins de 57 cm" },
+          { "value" : "67", "label" : "Moins de 67 cm" },
+          { "value" : "aucune", "label" : "Aucune" }
+        ],
+        "answer" : "aucune"
+      },
+      {
+        "title" : "Quelle sont les raisons possibles pur qu'un chien soit en catégorie D ?",
+        "type" : "multiple-choice",
+        "options" : [
+          { "value" : "molosse", "label" : "Le chien est un molosse" },
+          { "value" : "hauteur", "label" : "Le chien a une hauteur au garrot de 57 cm ou plus" },
+          { "value" : "40kg24ms", "label" : "Le chien pèse plus de 40 kg et court à une vitesse inférieure à 2,40 m/s" },
+          { "value" : "50kg", "label" : "Le chien pèse plus de 50 kg" }
+        ],
+        "answer" : [ "molosse", "40kg24ms" ]
+      },
+      {
+        "title" : "Quelle sont les paramètres pouvant influencer le TPS déterminé par le juge ?",
+        "type" : "multiple-choice",
+        "options" : [
+          { "value" : "terrain", "label" : "La nature du terrain" },
+          { "value" : "meteo", "label" : "Les conditions météorologiques" },
+          { "value" : "difficulte", "label" : "La difficulté présumée du parcours" },
+          { "value" : "categorie", "label" : "La catégorie du chien" }
+        ],
+        "answer" : [ "terrain", "meteo", "difficulte" ]
+      },
+      {
+        "title" : "Sur certaines épreuves le TPS est déterminé à la fin de l'épreuve en ajoutant un certain pourcentage au temps réalisé par le chien le plus rapide ayant le moins de pénalité",
+        "type" : "true-false",
+        "answer" : "true"
+      },
+      {
+        "title" : "Sur certaines épreuves le TPS est déterminé à la fin de l'épreuve en ajoutant un certain pourcentage au temps réalisé par le chien le moins rapide ayant le moins de pénalité",
+        "type" : "true-false",
+        "answer" : "false"
+      },
+      {
+        "title" : "Que signifie TPS ?",
+        "type" : "single-choice",
+        "options" : [
+          { "value" : "tps", "label" : "Temps de Parcours Standard" },
+          { "value" : "passage", "label" : "Temps de Passage Standard" },
+          { "value" : "passage-secondes", "label" : "Temps de Passage en Secondes" },
+          { "value" : "secondes", "label" : "Temps de Parcours en Secondes" }
+        ],
+        "answer" : "tps"
+      },
+      {
+        "title" : "Que signifie TMP ?",
+        "type" : "single-choice",
+        "options" : [
+          { "value" : "tmp", "label" : "Temps Maximum de Parcours" },
+          { "value" : "passage", "label" : "Temps Maximum de Passage" },
+          { "value" : "penalites", "label" : "Taux Maximum de Pénalités" },
+          { "value" : "minimum", "label" : "Temps Minimum de Passage" }
+        ],
+        "answer" : "tmp"
+      },
+      {
+        "title" : "Quelles sont les raisons pouvant entraîner une pénalité",
+        "type" : "multiple-choice",
+        "options" : [
+          { "value" : "tmp", "label" : "Dépassement du TMP" },
+          { "value" : "tps", "label" : "Dépassement du TPS" },
+          { "value" : "faute", "label" : "Les fautes" },
+          { "value" : "refus", "label" : "Les refus" }
+        ],
+        "answer" : [ "tps", "faute", "refus" ]
+      },
+      {
+        "title" : "Les jouets et friandises sont autorisées durant le parcours",
+        "type" : "true-false",
+        "answer" : "false"
+      },
+      {
+        "title" : "La laisse est autorisée sur le terrain",
+        "type" : "true-false",
+        "answer" : "true"
+      },
+      {
+        "title" : "Les colliers et harnais sont autorisés durant le parcours",
+        "type" : "true-false",
+        "answer" : "false"
+      },
+      {
+        "title" : "A quel moment démarre le chrono ?",
+        "type" : "single-choice",
+        "options" : [
+          { "value" : "ligne", "label" : "Lorsque le chien franchit la ligne de départ" },
+          { "value" : "obstacle", "label" : "Lorsque le chien franchit le premier obstacle" },
+          { "value" : "juge", "label" : "Au signal du juge" },
+          { "value" : "courrir", "label" : "Lorsque le chien commence à courrir" }
+        ],
+        "answer" : "ligne"
+      },
+      {
+        "title" : "Quelle est la distance maximum entre la ligne de départ et le premier obstacle ?",
+        "type" : "single-choice",
+        "options" : [
+          { "value" : "50", "label" : "50 cm" },
+          { "value" : "100", "label" : "1 m" },
+          { "value" : "150", "label" : "1 m 50" },
+          { "value" : "200", "label" : "2 m" }
+        ],
+        "answer" : "100"
+      },
+      {
+        "title" : "Quelle est la taille miniumm du terrain pour l'implantation d'un parcours ?",
+        "type" : "single-choice",
+        "options" : [
+          { "value" : "24-40", "label" : "24 m par 40 m" },
+          { "value" : "20-40", "label" : "20 m par 40 m" },
+          { "value" : "24-24", "label" : "24 m par 24 m" },
+          { "value" : "40-40", "label" : "40 m par 40 m" }
+        ],
+        "answer" : "24-40"
+      },
+      {
+        "title" : "Quelle est le nombre minimum d'obstacle dans un parcours ?",
+        "type" : "single-choice",
+        "options" : [
+          { "value" : "13", "label" : "13" },
+          { "value" : "15", "label" : "15" },
+          { "value" : "17", "label" : "17" },
+          { "value" : "20", "label" : "20" }
+        ],
+        "answer" : "15"
+      },
+      {
+        "title" : "Quelle est le nombre maximum d'obstacle dans un parcours ?",
+        "type" : "single-choice",
+        "options" : [
+          { "value" : "18", "label" : "18" },
+          { "value" : "20", "label" : "20" },
+          { "value" : "22", "label" : "22" },
+          { "value" : "24", "label" : "24" }
+        ],
+        "answer" : "22"
+      },
+      {
+        "title" : "Quelle est le nombre maximum d'obstacle dans un parcours du 1er degré ?",
+        "type" : "single-choice",
+        "options" : [
+          { "value" : "16", "label" : "16" },
+          { "value" : "18", "label" : "18" },
+          { "value" : "20", "label" : "20" },
+          { "value" : "22", "label" : "22" }
+        ],
+        "answer" : "18"
+      },
+      {
+        "title" : "Quelle est la longueur minimum d'un parcours ?",
+        "type" : "single-choice",
+        "options" : [
+          { "value" : "100", "label" : "100 m" },
+          { "value" : "120", "label" : "120 m" },
+          { "value" : "150", "label" : "150 m" },
+          { "value" : "200", "label" : "200 m" }
+        ],
+        "answer" : "100"
+      },
+      {
+        "title" : "Quelle est la longueur maximum d'un parcours ?",
+        "type" : "single-choice",
+        "options" : [
+          { "value" : "150", "label" : "150 m" },
+          { "value" : "200", "label" : "200 m" },
+          { "value" : "250", "label" : "250 m" },
+          { "value" : "300", "label" : "300 m" }
+        ],
+        "answer" : "200"
+      },
+      {
+        "title" : "Quelle est la distance minimum entre 2 obstacles ?",
+        "type" : "single-choice",
+        "options" : [
+          { "value" : "4", "label" : "4 m" },
+          { "value" : "5", "label" : "5 m" },
+          { "value" : "6", "label" : "6 m" },
+          { "value" : "7", "label" : "7 m" }
+        ],
+        "answer" : "5"
+      },
+      {
+        "title" : "Quelle est la distance maximum entre 2 obstacles ?",
+        "type" : "single-choice",
+        "options" : [
+          { "value" : "7", "label" : "7 m" },
+          { "value" : "8", "label" : "8 m" },
+          { "value" : "9", "label" : "9 m" },
+          { "value" : "aucune", "label" : "Aucune" }
+        ],
+        "answer" : "7"
+      },
+      {
+        "title" : "Quelle est le nombre minimum de sauts dans un parcours ?",
+        "type" : "single-choice",
+        "options" : [
+          { "value" : "7", "label" : "7 m" },
+          { "value" : "8", "label" : "8 m" },
+          { "value" : "9", "label" : "9 m" },
+          { "value" : "aucun", "label" : "Aucun" }
+        ],
+        "answer" : "7"
+      }
+    ]
+  }
+}
