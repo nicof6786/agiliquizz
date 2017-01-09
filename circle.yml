@@ -1,6 +1,5 @@
 machine:
   environment:
-    FIREBASE_TOKEN: 1/nYX6NXi6Ye8QhRT_JtDgCeLOk7JZLrEx4OfYrCCKeqQ
   node:
     version: 6
 dependencies:
