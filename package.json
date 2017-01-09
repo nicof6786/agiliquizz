@@ -1,14 +1,13 @@
 {
   "name": "agiliquizz",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "firebase serve",
+    "deploy": "firebase deploy --non-interactive --token \"$FIREBASE_TOKEN\""
   },
-  "author": "",
+  "author": "Nicolas Lepage",
   "license": "ISC",
   "devDependencies": {
-    "express": "^4.13.4"
+    "firebase-tools": "^3.2.1"
   }
 }

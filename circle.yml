@@ -1,0 +1,15 @@
+machine:
+  environment:
+    FIREBASE_TOKEN: 1/nYX6NXi6Ye8QhRT_JtDgCeLOk7JZLrEx4OfYrCCKeqQ
+  node:
+    version: 6
+dependencies:
+  override:
+    - npm i
+test:
+  override:
+deployment:
+  production:
+    branch: master
+    commands:
+      - npm run deploy
