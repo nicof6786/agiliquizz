@@ -160,7 +160,7 @@
         "answer" : "100"
       },
       {
-        "title" : "Quelle est la taille miniumm du terrain pour l'implantation d'un parcours ?",
+        "title" : "Quelle est la taille minimum du terrain pour l'implantation d'un parcours ?",
         "type" : "single-choice",
         "options" : [
           { "value" : "24-40", "label" : "24 m par 40 m" },

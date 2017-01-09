@@ -16,7 +16,7 @@ var zeroPad = function(i) {
   return s;
 };
 
-var app = angular.module('agiliquizz', [ 'ngMaterial', 'ngRoute', 'angularMoment' ]);
+var app = angular.module('agiliquizz', ['ngMaterial', 'ngRoute', 'angularMoment']);
 
 app.config(function($routeProvider, $locationProvider) {
   $routeProvider.when('/', {
@@ -166,7 +166,7 @@ app.controller('QuestionCtrl', function($interval, $location, $routeParams, $sco
           .cancel('Non');
     $mdDialog.show(confirm).then(function() {
       $location.url('/result');
-    });
+    }, angular.noop);
   };
 
   $scope.confirmCancel = function(event) {
@@ -178,7 +178,7 @@ app.controller('QuestionCtrl', function($interval, $location, $routeParams, $sco
           .cancel('Non');
     $mdDialog.show(confirm).then(function() {
       $location.url('/new');
-    });
+    }, angular.noop);
   };
 
   $scope.$on("$destroy", function() {
@@ -216,25 +216,22 @@ app.controller('ResultCtrl', function($location, $scope, $mdDialog, quizzSrv) {
   }
 });
 
-app.factory('quizzSrv', function($http, $location, $q, $timeout) {
+app.factory('quizzSrv', function($location, $q, $timeout) {
   var srv = {};
   var data = null;
   var quizz = null;
 
   srv.loadData = function(url) {
     return $q(function(resolve, reject) {
-      $http.get(decodeURIComponent(url)).
-      then(function(response) {
-        data = response.data;
+      firebase.database().ref(url).once('value').then(function(pData) {
+        data = pData.val();
         data.questions.forEach(function(question) {
           if (Array.isArray(question.answer)) {
             question.answer.sort();
           }
         });
         resolve();
-      }, function() {
-        reject();
-      });
+      }, reject);
     });
   };
 
