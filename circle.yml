@@ -5,6 +5,8 @@ machine:
 dependencies:
   override:
     - npm i
+compile:
+  override:
 test:
   override:
 deployment:
