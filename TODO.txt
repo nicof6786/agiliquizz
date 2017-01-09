@@ -1,1 +1,0 @@
-Ajout url /questions avec résumé avant résultat + bouton nav vers cette page

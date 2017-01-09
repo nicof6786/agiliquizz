@@ -18,7 +18,7 @@ var zeroPad = function(i) {
 
 var app = angular.module('agiliquizz', [ 'ngMaterial', 'ngRoute', 'angularMoment' ]);
 
-app.config(function($routeProvider) {
+app.config(function($routeProvider, $locationProvider) {
   $routeProvider.when('/', {
     templateUrl : 'static/templates/start.html',
     controller : 'StartCtrl'
@@ -35,6 +35,8 @@ app.config(function($routeProvider) {
     templateUrl : 'static/templates/result.html',
     controller : 'ResultCtrl'
   }).otherwise('/');
+
+  $locationProvider.html5Mode(true);
 });
 
 app.run(function(amMoment) {

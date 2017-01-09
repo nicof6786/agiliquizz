@@ -1,9 +1,10 @@
-<html lang="en" >
+<!DOCTYPE html>
+<html lang="fr" >
 <head>
   <title>AgiliQuizz</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <base href="/agiliquizz/">
-  <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.0.7/angular-material.min.css">
+  <base href="/">
+  <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.1/angular-material.min.css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
   <link rel="stylesheet" href="static/css/agiliquizz.css">
 </head>
@@ -12,16 +13,32 @@
     <div ng-view class="view-animate"></div>
   </div>
 
-  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-animate.min.js"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-aria.min.js"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-messages.min.js"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-route.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular-animate.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular-aria.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular-messages.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular-route.min.js"></script>
 
-  <script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.0.7/angular-material.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.1/angular-material.min.js"></script>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.13.0/moment-with-locales.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-moment/1.0.0-beta.6/angular-moment.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment-with-locales.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-moment/1.0.1/angular-moment.min.js"></script>
+
+  <script src="https://www.gstatic.com/firebasejs/3.6.4/firebase.js"></script>
+
+  <script src="https://cdn.firebase.com/libs/angularfire/2.2.0/angularfire.min.js"></script>
+
+  <script>
+    // Initialize Firebase
+    var config = {
+      apiKey: "AIzaSyBYxYr2FjmORH05NK9cl_jQltM2wuSj8uA",
+      authDomain: "agiliquizz.firebaseapp.com",
+      databaseURL: "https://agiliquizz.firebaseio.com",
+      storageBucket: "agiliquizz.appspot.com",
+      messagingSenderId: "214154703738"
+    };
+    firebase.initializeApp(config);
+  </script>
 
   <script src="static/js/agiliquizz.js"></script>
 </body>
